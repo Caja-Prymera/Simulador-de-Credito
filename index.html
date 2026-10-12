@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Admisión Crediticia V9 - Caja Prymera</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); width: 100%; max-width: 550px; }
+        .logo-container { text-align: center; margin-bottom: 14px; display: flex; justify-content: center; align-items: center; }
+        .logo-container img, .logo-container svg { max-width: 240px; width: 100%; height: auto; display: block; margin: 0 auto; }
+        h2 { color: #2c3e50; text-align: center; margin-top: 0; margin-bottom: 15px; font-size: 22px; }
+        
+        .requisitos-box { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; padding: 12px; border-radius: 6px; font-size: 13px; margin-bottom: 22px; line-height: 1.45; text-align: justify; }
+        
+        .section-title { font-size: 17px; color: #2980b9; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; margin-top: 0; margin-bottom: 18px; font-weight: bold; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; color: #34495e; font-size: 14px; }
+        
+        select, input[type="text"] { width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s; margin-bottom: 5px; }
+        select:focus, input[type="text"]:focus { outline: none; border-color: #3498db; }
+        
+        button { width: 100%; padding: 14px; background-color: #2980b9; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 12px; transition: background-color 0.3s; }
+        button:hover { background-color: #3498db; }
+        button:disabled { background-color: #7fb3d5; cursor: not-allowed; }
+        .btn-secondary { background-color: #95a5a6; }
+        .btn-secondary:hover { background-color: #7f8c8d; }
+        
+        .hidden { display: none !important; }
+        
+        .alert { padding: 15px; border-radius: 6px; margin-top: 20px; text-align: left; font-weight: 500; font-size: 14px; line-height: 1.5; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        
+        .indent-box { margin-top: 10px; border-left: 3px solid #3498db; padding-left: 12px; }
+
+        .checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin-top: 18px; margin-bottom: 8px; font-size: 13px; color: #34495e; line-height: 1.4; }
+        .checkbox-group input[type="checkbox"] { margin-top: 3px; transform: scale(1.15); cursor: pointer; }
+        .legal-link { color: #2980b9; text-decoration: underline; cursor: pointer; font-weight: 600; }
+        .legal-link:hover { color: #1a5276; }
+
+        /* Estilos de los Modales (Ventanas Emergentes Legales) */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 15px; box-sizing: border-box; }
+        .modal-content { background: white; padding: 25px; border-radius: 10px; max-width: 600px; width: 100%; max-height: 82vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+        .modal-content h3 { margin-top: 0; color: #004b93; font-size: 17px; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; text-align: center; }
+        .modal-subtitle { font-size: 11px; color: #7f8c8d; text-align: center; margin-top: -6px; margin-bottom: 14px; }
+        .modal-content h4 { color: #2c3e50; font-size: 13.5px; margin-top: 14px; margin-bottom: 6px; }
+        .modal-content p, .modal-content li { font-size: 12.5px; color: #444; line-height: 1.55; text-align: justify; margin-bottom: 8px; }
+        .modal-content ul { padding-left: 18px; margin-top: 4px; margin-bottom: 10px; }
+
+        @media (max-width: 600px) {
+            .card { padding: 20px 15px; }
+            h2 { font-size: 20px; }
+            .modal-content { padding: 18px 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        
+        <!-- CABECERA CON LOGO OFICIAL CAJA PRYMERA INCRUSTADO (100% COMPLETO Y NÍTIDO) -->
+        <div class="logo-container">
+            <img src="PRYMERA-LOGO.png" alt="Caja Prymera" onerror="this.style.display='none'; document.getElementById('logo_svg_prymera').style.display='block';">
+            <svg id="logo_svg_prymera" style="display:none;" viewBox="0 0 520 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prymera Caja de Ahorro y Crédito">
+                <!-- Isotipo: Sol/Cabeza Amarilla -->
+                <path d="M68 18 C52 20, 44 33, 52 44 C60 54, 80 50, 85 37 C90 25, 79 14, 64 17 C55 19, 51 27, 56 33 C60 24, 73 22, 76 31 C78 38, 69 44, 61 41 C54 39, 56 28, 66 25 Z" fill="#FBBC05"/>
+                <ellipse cx="68" cy="32" rx="15" ry="11" transform="rotate(-18 68 32)" fill="none" stroke="#FBBC05" stroke-width="6.5" stroke-linecap="round"/>
+                <path d="M53 28 C58 16, 75 14, 81 24" fill="none" stroke="#FBBC05" stroke-width="4.5" stroke-linecap="round"/>
+                <!-- Isotipo: Arco Rojo -->
+                <path d="M22 66 C18 66, 17 72, 23 74 C36 77, 56 64, 75 65 C84 66, 86 76, 76 85 C71 90, 67 94, 71 97 C76 100, 90 98, 96 93 C107 84, 105 64, 90 56 C70 47, 42 58, 22 66 Z" fill="#E30613"/>
+                <!-- Isotipo: Cuerpo Verde -->
+                <path d="M58 68 C53 68, 52 73, 54 78 C56 87, 46 104, 39 121 C32 138, 32 154, 42 162 C48 166, 54 164, 52 159 C49 155, 52 145, 57 131 C63 115, 72 95, 70 80 C69 72, 63 68, 58 68 Z" fill="#008D36"/>
+                <!-- Logotipo: Texto "Prymera" -->
+                <text x="115" y="130" font-family="'Segoe UI', 'Trebuchet MS', Arial, sans-serif" font-size="86" font-weight="800" font-style="italic" fill="#004B93" letter-spacing="-1.5">Prymera</text>
+                <!-- Subtítulo: "caja de ahorro y crédito" -->
+                <text x="242" y="158" font-family="'Segoe UI', 'Trebuchet MS', Arial, sans-serif" font-size="23" font-style="italic" font-weight="500" fill="#004B93">caja de ahorro y crédito</text>
+            </svg>
+        </div>
+        <h2>Simulador de Admisión Crediticia</h2>
+        
+        <div class="requisitos-box">
+            <strong>Requisitos:</strong> Ser mayor de 18 años, contar con lugar de trabajo/negocio y residencia en Lima. Ingreso bruto mínimo de S/ 1,230, no registrar deudas impagas, demostrar fuente de ingreso vigente y DNI.<br><strong>*Sujeto a evaluación.</strong>
+        </div>
+        
+        <!-- PANTALLA 1: SELECCIÓN DE TITULAR -->
+        <div id="step1">
+            <div class="form-group">
+                <label>Titular del crédito:</label>
+                <select id="titular" onchange="toggleParentesco()">
+                    <option value="">Seleccione...</option>
+                    <option value="yo">Yo (El paciente)</option>
+                    <option value="tercero">Un familiar o tercero</option>
+                </select>
+                
+                <!-- Sub-pregunta Parentesco -->
+                <div id="bloque_parentesco" class="indent-box hidden">
+                    <label>Parentesco con el paciente:</label>
+                    <select id="parentesco" onchange="toggleParentescoOtros()">
+                        <option value="">Seleccione...</option>
+                        <option value="Padre">Padre</option>
+                        <option value="Madre">Madre</option>
+                        <option value="Cónyuge">Cónyuge</option>
+                        <option value="Hijo">Hijo</option>
+                        <option value="Hermano">Hermano</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                    
+                    <input type="text" id="parentesco_otros" class="hidden" placeholder="Especifique el parentesco" style="margin-top: 10px;">
+                </div>
+            </div>
+            <button onclick="nextStep()">Continuar</button>
+        </div>
+
+        <!-- PANTALLA 2: BLOQUE ÚNICO CON TÍTULO DINÁMICO -->
+        <div id="step2" class="hidden">
+            
+            <div id="titulo_dinamico" class="section-title">Datos del Titular</div>
+            
+            <div class="form-group">
+                <label>DNI:</label>
+                <input type="text" id="dni" placeholder="8 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);">
+            </div>
+            
+            <div class="form-group">
+                <label>Edad del titular:</label>
+                <input type="text" id="edad" placeholder="Años" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 2);">
+            </div>
+
+            <div class="form-group">
+                <label>Situación laboral:</label>
+                <select id="laboral" onchange="toggleLaboral()">
+                    <option value="">Seleccione...</option>
+                    <option value="dependiente">Trabajo dependiente (Planilla)</option>
+                    <option value="independiente">Trabajo Independiente (RH)</option>
+                    <option value="negocio">Tengo negocio propio</option>
+                    <option value="sin_empleo">Trabajos ocasionales / Sin empleo fijo</option>
+                </select>
+                
+                <div id="bloque_laboral" class="indent-box hidden">
+                    <label>Ubicación del centro de labores/negocio:</label>
+                    <select id="region_laboral">
+                        <option value="">Seleccione...</option>
+                        <option value="lima">Lima Metropolitana y Callao</option>
+                        <option value="norte_chico">Provincias Norte Chico (Barranca, Huacho, Huaral)</option>
+                        <option value="otras">Otras Provincias (Resto del país)</option>
+                    </select>
+                    
+                    <label style="margin-top: 15px;">Ingreso promedio:</label>
+                    <select id="ingreso">
+                        <option value="">Seleccione rango...</option>
+                        <option value="rango1">Menos de S/ 1,230</option>
+                        <option value="rango2">De S/ 1,230 hasta S/ 3,000</option>
+                        <option value="rango3">De S/ 3,000 hasta S/ 5,000</option>
+                        <option value="rango4">Más de S/ 5,000</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Región de residencia actual:</label>
+                <select id="region_residencia">
+                    <option value="">Seleccione...</option>
+                    <option value="lima">Lima Metropolitana y Callao</option>
+                    <option value="norte_chico">Provincias Norte Chico (Barranca, Huacho, Huaral)</option>
+                    <option value="otras">Otras Provincias (Resto del país)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Destino del crédito:</label>
+                <select id="destino">
+                    <option value="">Seleccione...</option>
+                    <option value="aparatologia">Aparatología</option>
+                    <option value="quirurgico">Procedimiento quirúrgico</option>
+                </select>
+            </div>
+            
+            <div class="form-group hidden" id="bloque_dni_paciente">
+                <label>DNI del paciente:</label>
+                <input type="text" id="dni_paciente" placeholder="8 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);">
+            </div>
+
+            <div class="form-group">
+                <label>Número de celular:</label>
+                <input type="text" id="celular" placeholder="9 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);">
+            </div>
+
+            <!-- Casilla de Términos y Datos Personales con 2 ventanas independientes -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="acepto_terminos">
+                <div>
+                    He leído y acepto los <span class="legal-link" onclick="openModal('modal_terminos')">Términos y Condiciones</span> y autorizo el <span class="legal-link" onclick="openModal('modal_datos')">Tratamiento de mis Datos Personales</span> por parte de Caja Prymera para fines de esta evaluación crediticia.
+                </div>
+            </div>
+            
+            <button id="btn_terminar" onclick="evaluateCredit()">Terminar registro</button>
+            <button onclick="resetForm()" class="btn-secondary">Nuevo registro</button>
+        </div>
+
+        <div id="result" class="hidden alert"></div>
+    </div>
+
+    <!-- MODAL 1: TÉRMINOS Y CONDICIONES DEL SIMULADOR -->
+    <div id="modal_terminos" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('modal_terminos')">
+        <div class="modal-content">
+            <h3>TÉRMINOS Y CONDICIONES DEL SIMULADOR DE ADMISIÓN CREDITICIA</h3>
+            <div class="modal-subtitle">Caja Rural de Ahorro y Crédito Prymera S.A. (“Caja Prymera”)</div>
+            
+            <h4>1. Naturaleza de la Pre-Evaluación</h4>
+            <p>
+                El presente Simulador de Admisión Crediticia es una herramienta digital referencial y preliminar puesta a disposición por <strong>Caja Prymera</strong>. El resultado emitido al finalizar el registro constituye únicamente un filtro inicial de admisión y <strong>no representa una aprobación definitiva, oferta vinculante, contrato de crédito ni obliga a Caja Prymera al desembolso inmediato</strong> de ningún financiamiento.
+            </p>
+
+            <h4>2. Declaración Jurada de Veracidad</h4>
+            <p>
+                Al completar este registro y marcar la casilla de aceptación, el usuario <strong>DECLARA BAJO JURAMENTO</strong> que toda la información consignada (identificación del titular y paciente, edad, situación y ubicación laboral, rango de ingresos, lugar de residencia, destino del crédito y teléfono de contacto) es real, actual, veraz y vigente, asumiendo plena responsabilidad ante cualquier inexactitud o falsedad.
+            </p>
+
+            <h4>3. Condiciones para la Evaluación Crediticia Formal</h4>
+            <p>
+                En caso de que el registro supere los filtros preliminares del simulador:
+            </p>
+            <ul>
+                <li>Un ejecutivo comercial de Caja Prymera se pondrá en contacto con el titular dentro de las siguientes <strong>24 horas útiles</strong> al número de celular registrado.</li>
+                <li>La aprobación final del crédito estará sujeta a la validación biométrica/identidad del solicitante, evaluación en centrales de riesgo, verificación de sustentos de ingresos, capacidad de endeudamiento y cumplimiento de las políticas crediticias vigentes de Caja Prymera.</li>
+                <li>Las tasas de interés, comisiones, gastos, plazos y cuotas aplicables serán informadas de manera detallada y transparente por el asesor antes de la eventual firma de cualquier documento contractual.</li>
+            </ul>
+
+            <h4>4. Uso Adecuado del Canal Digital</h4>
+            <p>
+                El usuario se compromete a hacer un uso lícito y personal de este formulario digital, quedando prohibido el registro de datos de terceras personas sin su consentimiento expreso o el uso automatizado de la herramienta.
+            </p>
+
+            <button onclick="closeModal('modal_terminos')">Cerrar / Entendido</button>
+        </div>
+    </div>
+
+    <!-- MODAL 2: POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES (FOR-GOB-041 / V05) -->
+    <div id="modal_datos" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('modal_datos')">
+        <div class="modal-content">
+            <h3>CONSENTIMIENTO Y POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES</h3>
+            <div class="modal-subtitle">Basado en el documento normativo FOR-GOB-041 / V05 – Caja Prymera</div>
+            
+            <h4>DECLARACIÓN DE CONSENTIMIENTO</h4>
+            <p>
+                Declaro que se me ha informado de manera libre, previa, expresa e inequívoca que mis datos personales y sensibles proporcionados en este formulario serán tratados por <strong>CAJA RURAL DE AHORRO Y CRÉDITO PRYMERA S.A. (“PRYMERA”)</strong> conforme a su Política de Datos Personales detallada a continuación:
+            </p>
+
+            <h4>1. Objetivo y Marco Normativo</h4>
+            <p>
+                PRYMERA protege la privacidad de sus datos personales (recopilar, registrar, organizar, almacenar, conservar, elaborar, modificar, extraer, consultar, utilizar, bloquear o suprimir) en cumplimiento de la <strong>Ley N° 29733</strong> (Ley de Protección de Datos Personales), su Reglamento aprobado por <strong>Decreto Supremo N° 016-2024-JUS</strong>, y la Directiva de Seguridad de la Información (<strong>Resolución Directoral N° 019-2013-JUS/DGPDP</strong>).
+            </p>
+
+            <h4>2. Finalidades Necesarias vinculadas con el Servicio</h4>
+            <p>Sus datos personales serán utilizados exclusivamente para las siguientes finalidades necesarias:</p>
+            <ul>
+                <li>Verificar y validar la identidad del solicitante para la atención por canales digitales o no presenciales.</li>
+                <li>Gestionar la evaluación de riesgos crediticios y admisión, incluyendo consultas ante centrales de riesgos.</li>
+                <li>Contactar al solicitante (vía llamada telefónica, WhatsApp, SMS o medios electrónicos) para enviar y/o realizar cotizaciones o propuestas de financiamiento solicitadas a través del simulador.</li>
+                <li>Formalización y gestión de los productos y/o servicios que lleguen a contratarse con PRYMERA.</li>
+                <li>Atender consultas, solicitudes y prevenir o detectar fraudes o actividades delictivas.</li>
+                <li>Alojar, almacenar y procesar la información en empresas especializadas (nacionales o internacionales) que brinden servicios de infraestructura en la nube.</li>
+                <li>Gestionar el cumplimiento de obligaciones legales aplicables al sistema financiero.</li>
+            </ul>
+
+            <h4>3. Datos Personales y Sensibles Obligatorios</h4>
+            <p>Para llevar a cabo la evaluación de admisión crediticia, es obligatorio proporcionar:</p>
+            <ul>
+                <li><strong>Datos identificativos y de contacto:</strong> Número de DNI (del titular y paciente, según corresponda) y número de teléfono celular.</li>
+                <li><strong>Datos de características personales y sociales:</strong> Parentesco/titularidad, edad, situación laboral, ubicación laboral y ubicación de residencia.</li>
+                <li><strong>Datos económicos, financieros y sensibles:</strong> Rango de ingresos económicos y destino del crédito (incluyendo financiamiento de gastos médicos/salud), necesarios para evaluar el riesgo crediticio del solicitante.</li>
+            </ul>
+
+            <h4>4. Consecuencia de no proporcionar los datos</h4>
+            <p>
+                De no proporcionar los datos personales obligatorios o no aceptar su tratamiento para las finalidades necesarias descritas, PRYMERA no podrá realizar la evaluación crediticia ni contactarlo con una propuesta de financiamiento.
+            </p>
+
+            <h4>5. Destinatarios Necesarios</h4>
+            <p>
+                Sus datos podrán ser tratados por terceros (a nivel nacional o internacional) por encargo de PRYMERA únicamente para cumplir las finalidades necesarias del servicio: Autoridades nacionales y centrales de riesgos, servicios de plataforma, proveedores de hosting/nube, mensajería, contact center, cobranza, consultoría, proveedores tecnológicos y custodia documental. El detalle actualizado puede consultarse en <strong>www.prymera.pe</strong>, sección <em>“Protegemos tus datos”</em>.
+            </p>
+
+            <h4>6. Banco de Datos y Plazo de Almacenamiento</h4>
+            <p>
+                La información registrada será almacenada en el banco de datos personales denominado <strong>“Clientes”</strong>, inscrito en el Registro Nacional de Protección de Datos Personales con <strong>Código RNPDP-PJP N° 179</strong>. Los datos serán conservados por un plazo de diez (10) años conforme a lo dispuesto por la Ley N° 26702 (Ley General del Sistema Financiero y del Sistema de Seguros y Orgánica de la SBS).
+            </p>
+
+            <h4>7. Ejercicio de Derechos ARCO</h4>
+            <p>
+                Usted puede ejercer en cualquier momento sus derechos de Acceso, Rectificación, Cancelación y Oposición (ARCO), así como revocar su consentimiento, presentando su solicitud en cualquiera de las agencias de PRYMERA o enviando un correo electrónico a <strong>arco@prymera.com.pe</strong>. De considerar que no ha sido atendido, puede presentar un reclamo ante la Autoridad Nacional de Protección de Datos Personales (Ministerio de Justicia y Derechos Humanos – Calle Scipión Llona 350, Miraflores, Lima).
+            </p>
+
+            <button onclick="closeModal('modal_datos')">Cerrar / Entendido</button>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // CONECTOR GOOGLE SHEETS ACTIVO - CAJA PRYMERA
+        // =========================================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-46mc5mnTcbf9lHOp9nKx67mPX9v7nwcIjEZ6regs1h4XxAQ4L0jl_HmFSd32ESyo/exec"; 
+
+        let etiquetaTitularGlobal = "Paciente";
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function toggleParentesco() {
+            const titular = document.getElementById('titular').value;
+            const bloque = document.getElementById('bloque_parentesco');
+            
+            if (titular === 'tercero') {
+                bloque.classList.remove('hidden');
+            } else {
+                bloque.classList.add('hidden');
+                document.getElementById('parentesco').value = '';
+                document.getElementById('parentesco_otros').classList.add('hidden');
+                document.getElementById('parentesco_otros').value = '';
+            }
+        }
+
+        function toggleParentescoOtros() {
+            const parentesco = document.getElementById('parentesco').value;
+            const otrosInput = document.getElementById('parentesco_otros');
+            
+            if (parentesco === 'Otros') {
+                otrosInput.classList.remove('hidden');
+            } else {
+                otrosInput.classList.add('hidden');
+                otrosInput.value = '';
+            }
+        }
+
+        function nextStep() {
+            const titular = document.getElementById('titular').value;
+            const parentesco = document.getElementById('parentesco').value;
+            const parentescoOtros = document.getElementById('parentesco_otros').value.trim();
+            
+            if (!titular) {
+                alert('Por favor, seleccione el Titular del crédito.');
+                return;
+            }
+            
+            etiquetaTitularGlobal = 'Paciente (Titular)';
+            if (titular === 'tercero') {
+                if (!parentesco) {
+                    alert('Por favor, seleccione el parentesco.');
+                    return;
+                }
+                if (parentesco === 'Otros') {
+                    if (!parentescoOtros) {
+                        alert('Por favor, especifique el parentesco.');
+                        return;
+                    }
+                    etiquetaTitularGlobal = 'Tercero (' + parentescoOtros + ')';
+                } else {
+                    etiquetaTitularGlobal = 'Tercero (' + parentesco + ')';
+                }
+            }
+            
+            document.getElementById('titulo_dinamico').textContent = 'Datos del Titular (' + (titular === 'yo' ? 'Paciente' : (parentesco === 'Otros' ? parentescoOtros : parentesco)) + ')';
+            
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('result').classList.add('hidden');
+            
+            if (titular === 'tercero') {
+                document.getElementById('bloque_dni_paciente').classList.remove('hidden');
+            } else {
+                document.getElementById('bloque_dni_paciente').classList.add('hidden');
+                document.getElementById('dni_paciente').value = '';
+            }
+        }
+
+        function toggleLaboral() {
+            const laboral = document.getElementById('laboral').value;
+            const bloque = document.getElementById('bloque_laboral');
+
+            if (laboral === 'dependiente' || laboral === 'independiente' || laboral === 'negocio') {
+                bloque.classList.remove('hidden');
+            } else {
+                bloque.classList.add('hidden');
+                document.getElementById('region_laboral').value = '';
+                document.getElementById('ingreso').value = '';
+            }
+        }
+
+        function getSelectedText(selectId) {
+            const el = document.getElementById(selectId);
+            if (!el || el.selectedIndex <= 0) return "No aplica";
+            return el.options[el.selectedIndex].text;
+        }
+
+        function evaluateCredit() {
+            const titular = document.getElementById('titular').value;
+            const dni = document.getElementById('dni').value;
+            const edad = parseInt(document.getElementById('edad').value) || 0;
+            const laboral = document.getElementById('laboral').value;
+            const regionLaboral = document.getElementById('region_laboral').value;
+            const ingreso = document.getElementById('ingreso').value;
+            const regionResidencia = document.getElementById('region_residencia').value;
+            const destino = document.getElementById('destino').value;
+            const dniPaciente = document.getElementById('dni_paciente').value;
+            const celular = document.getElementById('celular').value;
+            const aceptoTerminos = document.getElementById('acepto_terminos').checked;
+            
+            const resultDiv = document.getElementById('result');
+            const btnTerminar = document.getElementById('btn_terminar');
+            resultDiv.classList.remove('hidden', 'success', 'error');
+            
+            let errores = [];
+            if (dni.length !== 8) errores.push("- DNI del titular (8 dígitos).");
+            if (edad === 0) errores.push("- Edad del titular.");
+            if (!laboral) errores.push("- Situación laboral.");
+            
+            if (laboral === 'dependiente' || laboral === 'independiente' || laboral === 'negocio') {
+                if (!regionLaboral) errores.push("- Ubicación del centro de labores/negocio.");
+                if (!ingreso) errores.push("- Ingreso promedio.");
+            }
+            
+            if (!regionResidencia) errores.push("- Región de residencia actual.");
+            if (!destino) errores.push("- Destino del crédito.");
+            
+            if (titular === 'tercero' && dniPaciente.length !== 8) {
+                errores.push("- DNI del paciente (8 dígitos).");
+            }
+            if (celular.length !== 9) errores.push("- Número de celular (9 dígitos).");
+            if (!aceptoTerminos) errores.push("- Debe aceptar los Términos y Condiciones y el Tratamiento de Datos Personales.");
+
+            if (errores.length > 0) {
+                resultDiv.innerHTML = "<b>Complete los siguientes campos obligatorios antes de continuar:</b><br>" + errores.join("<br>");
+                resultDiv.classList.add('error');
+                resultDiv.classList.remove('hidden');
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            let motivosRechazo = [];
+            
+            if (edad < 18 || edad > 74) {
+                motivosRechazo.push("Edad fuera de rango (" + edad + " años)");
+            }
+            if (laboral === 'sin_empleo') {
+                motivosRechazo.push("Sin empleo fijo / Trabajos ocasionales");
+            }
+            if (ingreso === 'rango1') {
+                motivosRechazo.push("Ingreso menor a S/ 1,230");
+            }
+            
+            const residenciaValida = (regionResidencia === 'lima' || regionResidencia === 'norte_chico');
+            const laboralValida = (regionLaboral === 'lima' || regionLaboral === 'norte_chico');
+            if (!residenciaValida) {
+                motivosRechazo.push("Residencia en Otras Provincias");
+            }
+            if (laboral !== 'sin_empleo' && !laboralValida) {
+                motivosRechazo.push("Ubicación laboral en Otras Provincias");
+            }
+
+            const tieneRechazo = motivosRechazo.length > 0;
+            const estadoResultado = tieneRechazo ? "RECHAZADO" : "APROBADO";
+            const detalleRechazo = tieneRechazo ? motivosRechazo.join(" | ") : "Cumple todos los filtros";
+
+            // Bloquear botón temporalmente para evitar doble envío accidental
+            btnTerminar.disabled = true;
+            btnTerminar.textContent = "Procesando registro...";
+
+            const payload = {
+                resultado: estadoResultado,
+                motivoRechazo: detalleRechazo,
+                titularDetalle: etiquetaTitularGlobal,
+                dni: dni,
+                edad: edad,
+                laboralTexto: getSelectedText('laboral'),
+                regionLaboralTexto: getSelectedText('region_laboral'),
+                ingresoTexto: getSelectedText('ingreso'),
+                regionResidenciaTexto: getSelectedText('region_residencia'),
+                destinoTexto: getSelectedText('destino'),
+                dniPaciente: titular === 'tercero' ? dniPaciente : "Mismo titular",
+                celular: celular
+            };
+
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            }).finally(() => {
+                btnTerminar.textContent = "Registro completado";
+                if (!tieneRechazo) {
+                    resultDiv.innerHTML = "El registro finalizó exitosamente. Un ejecutivo de Caja Prymera se contactará con usted dentro de las siguientes 24 horas útiles para continuar con la evaluación.";
+                    resultDiv.classList.add('success');
+                } else {
+                    resultDiv.innerHTML = "En base a la política interna, por el momento no es posible continuar con el proceso de evaluación.";
+                    resultDiv.classList.add('error');
+                }
+                resultDiv.classList.remove('hidden');
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+        
+        function resetForm() {
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('result').classList.add('hidden');
+            
+            const btnTerminar = document.getElementById('btn_terminar');
+            btnTerminar.disabled = false;
+            btnTerminar.textContent = "Terminar registro";
+            
+            document.getElementById('titular').value = '';
+            document.getElementById('parentesco').value = '';
+            document.getElementById('parentesco_otros').value = '';
+            document.getElementById('bloque_parentesco').classList.add('hidden');
+            document.getElementById('parentesco_otros').classList.add('hidden');
+            
+            document.getElementById('dni').value = '';
+            document.getElementById('edad').value = '';
+            document.getElementById('laboral').value = '';
+            document.getElementById('region_laboral').value = '';
+            document.getElementById('ingreso').value = '';
+            document.getElementById('bloque_laboral').classList.add('hidden');
+            
+            document.getElementById('region_residencia').value = '';
+            document.getElementById('destino').value = '';
+            document.getElementById('dni_paciente').value = '';
+            document.getElementById('celular').value = '';
+            document.getElementById('acepto_terminos').checked = false;
+        }
+    </script>
+</body>
+</html>
