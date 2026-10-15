@@ -210,7 +210,7 @@
             </div>
             
             <button id="btn_terminar" onclick="evaluateCredit()" class="btn-encendido">Terminar registro</button>
-            <button id="btn_nuevo" onclick="resetForm()" class="btn-apagado">Nuevo registro</button>
+            <button id="btn_nuevo" onclick="resetForm()" class="btn-apagado">Volver al inicio</button>
         </div>
 
         <div id="result" class="hidden alert"></div>
@@ -508,6 +508,7 @@
                 const btnNuevo = document.getElementById('btn_nuevo');
                 btnNuevo.classList.remove('btn-apagado');
                 btnNuevo.classList.add('btn-encendido');
+                btnNuevo.textContent = "Nuevo registro";
                 
                 if (!tieneRechazo) {
                     resultDiv.innerHTML = "El registro finalizó exitosamente. Le recordamos que este registro no implica la aprobación del crédito, el cual estará sujeto a la evaluación correspondiente. Un ejecutivo de Caja Prymera se contactará con usted dentro de las siguientes 24 horas hábiles para continuar con el proceso.";
