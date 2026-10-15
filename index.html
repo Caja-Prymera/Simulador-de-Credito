@@ -20,11 +20,16 @@
         select, input[type="text"] { width: 100%; padding: 10px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s; margin-bottom: 5px; }
         select:focus, input[type="text"]:focus { outline: none; border-color: #3498db; }
         
-        button { width: 100%; padding: 14px; background-color: #2980b9; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 12px; transition: background-color 0.3s; }
-        button:hover { background-color: #3498db; }
-        button:disabled { background-color: #7fb3d5; cursor: not-allowed; }
-        .btn-secondary { background-color: #95a5a6; }
-        .btn-secondary:hover { background-color: #7f8c8d; }
+        button { width: 100%; padding: 14px; border-radius: 6px; font-size: 16px; font-weight: bold; margin-top: 12px; transition: all 0.3s ease; }
+        
+        /* Estado ENCENDIDO (Contorno Azul y Sombra) */
+        .btn-encendido { background-color: #ffffff; color: #004b93; border: 2px solid #004b93; cursor: pointer; box-shadow: 0 4px 10px rgba(0, 75, 147, 0.15); }
+        .btn-encendido:hover { background-color: #f4f7f6; box-shadow: 0 6px 15px rgba(0, 75, 147, 0.25); }
+        .btn-encendido:disabled { background-color: #ecf0f1; border-color: #bdc3c7; color: #95a5a6; cursor: not-allowed; box-shadow: none; }
+        
+        /* Estado APAGADO (Gris Plano) */
+        .btn-apagado { background-color: #ecf0f1; color: #95a5a6; border: 2px solid transparent; cursor: default; box-shadow: none; }
+        .btn-apagado:hover { background-color: #e0e6e8; }
         
         .hidden { display: none !important; }
         
@@ -204,8 +209,8 @@
                 </div>
             </div>
             
-            <button id="btn_terminar" onclick="evaluateCredit()">Terminar registro</button>
-            <button onclick="resetForm()" class="btn-secondary">Nuevo registro</button>
+            <button id="btn_terminar" onclick="evaluateCredit()" class="btn-encendido">Terminar registro</button>
+            <button id="btn_nuevo" onclick="resetForm()" class="btn-apagado">Nuevo registro</button>
         </div>
 
         <div id="result" class="hidden alert"></div>
@@ -495,6 +500,15 @@
                 body: JSON.stringify(payload)
             }).finally(() => {
                 btnTerminar.textContent = "Registro completado";
+                
+                // Apagar botón principal y encender botón de nuevo registro
+                btnTerminar.classList.remove('btn-encendido');
+                btnTerminar.classList.add('btn-apagado');
+                
+                const btnNuevo = document.getElementById('btn_nuevo');
+                btnNuevo.classList.remove('btn-apagado');
+                btnNuevo.classList.add('btn-encendido');
+                
                 if (!tieneRechazo) {
                     resultDiv.innerHTML = "El registro finalizó exitosamente. Le recordamos que este registro no implica la aprobación del crédito, el cual estará sujeto a la evaluación correspondiente. Un ejecutivo de Caja Prymera se contactará con usted dentro de las siguientes 24 horas hábiles para continuar con el proceso.";
                     resultDiv.classList.add('success');
@@ -515,6 +529,13 @@
             const btnTerminar = document.getElementById('btn_terminar');
             btnTerminar.disabled = false;
             btnTerminar.textContent = "Terminar registro";
+            // Restaurar botones a su estado original
+            btnTerminar.classList.remove('btn-apagado');
+            btnTerminar.classList.add('btn-encendido');
+            
+            const btnNuevo = document.getElementById('btn_nuevo');
+            btnNuevo.classList.remove('btn-encendido');
+            btnNuevo.classList.add('btn-apagado');
             
             document.getElementById('titular').value = '';
             document.getElementById('parentesco').value = '';
