@@ -58,7 +58,7 @@
 <body>
     <div class="card">
         
-        <!-- CABECERA CON LOGO OFICIAL CAJA PRYMERA INCRUSTADO (100% COMPLETO Y NÍTIDO) -->
+        <!-- CABECERA CON LOGO OFICIAL CAJA PRYMERA -->
         <div class="logo-container">
             <img src="PRYMERA-LOGO.png" alt="Caja Prymera" onerror="this.style.display='none'; document.getElementById('logo_svg_prymera').style.display='block';">
             <svg id="logo_svg_prymera" style="display:none;" viewBox="0 0 520 175" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prymera Caja de Ahorro y Crédito">
@@ -186,10 +186,21 @@
             </div>
 
             <!-- Casilla de Términos y Datos Personales con 2 ventanas independientes -->
-            <div class="checkbox-group">
-                <input type="checkbox" id="acepto_terminos">
-                <div>
-                    He leído y acepto los <span class="legal-link" onclick="openModal('modal_terminos')">Términos y Condiciones</span> y autorizo el <span class="legal-link" onclick="openModal('modal_datos')">Tratamiento de mis Datos Personales</span> por parte de Caja Prymera para fines de esta evaluación crediticia.
+            <div class="group">
+                <!-- Casilla 1: Obligatoria (Evaluación) -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="acepto_terminos">
+                    <label for="acepto_terminos">
+                        He leído y acepto los <span class="legal-link" onclick="openModal('modal_terminos')">Términos y Condiciones</span>, y autorizo el Tratamiento de mis Datos Personales para fines de esta evaluación crediticia. (*)
+                    </label>
+                </div>
+
+                <!-- Casilla 2: Opcional (Comercial) -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="acepto_comercial">
+                    <label for="acepto_comercial">
+                        Autorizo de manera libre y opcional el uso de mis datos personales para <span class="legal-link" onclick="openModal('modal_comercial')">fines de prospección comercial, ofertas y publicidad</span>.
+                    </label>
                 </div>
             </div>
             
@@ -235,63 +246,53 @@
         </div>
     </div>
 
-    <!-- MODAL 2: POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES (FOR-GOB-041 / V05) -->
-    <div id="modal_datos" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('modal_datos')">
+    <!-- MODAL 2: FINES COMERCIALES OPCIONALES (Documento Arturo) -->
+    <div id="modal_comercial" class="modal-overlay hidden" onclick="if(event.target === this) closeModal('modal_comercial')">
         <div class="modal-content">
-            <h3>CONSENTIMIENTO Y POLÍTICA DE TRATAMIENTO DE DATOS PERSONALES</h3>
-            <div class="modal-subtitle">Basado en el documento normativo FOR-GOB-041 / V05 – Caja Prymera</div>
+            <h3>CONSENTIMIENTO PARA FINALIDADES COMERCIALES OPCIONALES</h3>
+            <div class="modal-subtitle">Caja Rural de Ahorro y Crédito Prymera S.A. ("Caja Prymera")</div>
             
-            <h4>DECLARACIÓN DE CONSENTIMIENTO</h4>
-            <p>
-                Declaro que se me ha informado de manera libre, previa, expresa e inequívoca que mis datos personales y sensibles proporcionados en este formulario serán tratados por <strong>CAJA RURAL DE AHORRO Y CRÉDITO PRYMERA S.A. (“PRYMERA”)</strong> conforme a su Política de Datos Personales detallada a continuación:
-            </p>
-
-            <h4>1. Objetivo y Marco Normativo</h4>
-            <p>
-                PRYMERA protege la privacidad de sus datos personales (recopilar, registrar, organizar, almacenar, conservar, elaborar, modificar, extraer, consultar, utilizar, bloquear o suprimir) en cumplimiento de la <strong>Ley N° 29733</strong> (Ley de Protección de Datos Personales), su Reglamento aprobado por <strong>Decreto Supremo N° 016-2024-JUS</strong>, y la Directiva de Seguridad de la Información (<strong>Resolución Directoral N° 019-2013-JUS/DGPDP</strong>).
-            </p>
-
-            <h4>2. Finalidades Necesarias vinculadas con el Servicio</h4>
-            <p>Sus datos personales serán utilizados exclusivamente para las siguientes finalidades necesarias:</p>
+            <h4>1. Finalidades Comerciales</h4>
+            <p>De manera opcional, tus datos personales podrán ser utilizados por Caja Prymera, previo consentimiento expreso de tu parte, para las siguientes finalidades comerciales:</p>
             <ul>
-                <li>Verificar y validar la identidad del solicitante para la atención por canales digitales o no presenciales.</li>
-                <li>Gestionar la evaluación de riesgos crediticios y admisión, incluyendo consultas ante centrales de riesgos.</li>
-                <li>Contactar al solicitante (vía llamada telefónica, WhatsApp, SMS o medios electrónicos) para enviar y/o realizar cotizaciones o propuestas de financiamiento solicitadas a través del simulador.</li>
-                <li>Formalización y gestión de los productos y/o servicios que lleguen a contratarse con PRYMERA.</li>
-                <li>Atender consultas, solicitudes y prevenir o detectar fraudes o actividades delictivas.</li>
-                <li>Alojar, almacenar y procesar la información en empresas especializadas (nacionales o internacionales) que brinden servicios de infraestructura en la nube.</li>
-                <li>Gestionar el cumplimiento de obligaciones legales aplicables al sistema financiero.</li>
+                <li><strong>Estudios de mercado y elaboración de perfiles comerciales:</strong> realizar estudios de mercado, obtener información de fuentes públicas y privadas legalmente habilitadas, analizar tus preferencias, intereses, hábitos de consumo y comportamiento financiero, así como elaborar perfiles comerciales que permitan identificar tus necesidades y ofrecerte productos y servicios acordes con tus preferencias.</li>
+                <li><strong>Publicidad, promociones y ofertas personalizadas:</strong> enviarte publicidad, promociones, campañas y ofertas personalizadas de los productos y servicios financieros de Caja Prymera, mediante correo electrónico, llamadas telefónicas, mensajes de texto, mensajería instantánea, notificaciones a través de la App o Homebanking y otros canales habilitados para dicho fin.</li>
+                <li><strong>Prospección comercial:</strong> analizar la información disponible sobre tu relación con Caja Prymera, en la medida en que su utilización resulte lícita y pertinente, para identificar oportunidades comerciales y ofrecerte productos o servicios que puedan resultar de tu interés, incluso cuando no hayas solicitado expresamente información sobre ellos.</li>
+                <li><strong>Comunicación de datos a terceros con fines comerciales:</strong> compartir tus datos personales y, cuando corresponda y resulte legalmente procedente, información financiera con empresas vinculadas o socios comerciales con los que Caja Prymera mantenga alianzas, para realizar estudios de mercado, elaborar perfiles comerciales y ofrecer publicidad, promociones y ofertas de sus respectivos productos y servicios.</li>
             </ul>
+            <p>Cuando corresponda la comunicación de tus datos a terceros para estas finalidades, Caja Prymera te informará sobre los destinatarios o las categorías de destinatarios, los datos que serán compartidos y las finalidades específicas del tratamiento, de acuerdo con la normativa vigente. La comunicación se efectuará únicamente cuando exista una base jurídica válida y se hayan cumplido los requisitos aplicables.</p>
 
-            <h4>3. Datos Personales y Sensibles Obligatorios</h4>
-            <p>Para llevar a cabo la evaluación de admisión crediticia, es obligatorio proporcionar:</p>
+            <h4>2. Decisiones automatizadas y elaboración de perfiles</h4>
+            <p>Caja Prymera podrá utilizar mecanismos de análisis automatizado de datos personales y elaboración de perfiles para determinadas finalidades relacionadas con la prestación de sus servicios, la gestión de riesgos y, cuando corresponda, la personalización de ofertas comerciales.</p>
+            <p>Estos mecanismos podrán comprender:</p>
             <ul>
-                <li><strong>Datos identificativos y de contacto:</strong> Número de DNI (del titular y paciente, según corresponda) y número de teléfono celular.</li>
-                <li><strong>Datos de características personales y sociales:</strong> Parentesco/titularidad, edad, situación laboral, ubicación laboral y ubicación de residencia.</li>
-                <li><strong>Datos económicos, financieros y sensibles:</strong> Rango de ingresos económicos y destino del crédito (incluyendo financiamiento de gastos médicos/salud), necesarios para evaluar el riesgo crediticio del solicitante.</li>
+                <li><strong>Evaluación del riesgo crediticio:</strong> analizar información financiera y crediticia para evaluar el perfil de riesgo, la capacidad de pago y otros aspectos pertinentes para la evaluación de solicitudes de crédito, conforme a la normativa financiera aplicable.</li>
+                <li><strong>Detección y prevención de fraudes:</strong> analizar transacciones y actividades realizadas a través de los canales digitales y presenciales para identificar patrones inusuales o sospechosos y adoptar las medidas de seguridad que correspondan.</li>
+                <li><strong>Prevención del lavado de activos y del financiamiento del terrorismo:</strong> analizar operaciones y comportamientos transaccionales conforme a los criterios y obligaciones establecidos en la normativa aplicable, con la finalidad de identificar operaciones inusuales o sospechosos.</li>
+                <li><strong>Personalización de ofertas de productos y servicios:</strong> previo consentimiento cuando corresponda, analizar tus preferencias, intereses y comportamiento comercial para identificar productos y servicios que puedan resultar de tu interés y ofrecerte información, promociones y ofertas personalizadas.</li>
+                <li>El tratamiento de datos personales para la evaluación crediticia, la prevención del fraude y el cumplimiento de obligaciones legales se realizará sobre la base jurídica que corresponda a cada finalidad. El consentimiento para recibir publicidad o promociones no sustituye las condiciones legales aplicables a dichos tratamientos.</li>
             </ul>
+            <p>Cuando se adopten decisiones basadas en el tratamiento automatizado de datos personales que produzcan efectos jurídicos o afecten significativamente al titular, Caja Prymera deberá observar las garantías y obligaciones de información previstas en la normativa de protección de datos personales, incluyendo, cuando corresponda, lo dispuesto en el artículo 87 de su Reglamento.</p>
 
-            <h4>4. Consecuencia de no proporcionar los datos</h4>
-            <p>
-                De no proporcionar los datos personales obligatorios o no aceptar su tratamiento para las finalidades necesarias descritas, PRYMERA no podrá realizar la evaluación crediticia ni contactarlo con una propuesta de financiamiento.
-            </p>
+            <h4>3. Carácter opcional del consentimiento y consecuencias de no otorgarlo</h4>
+            <p>El consentimiento para el tratamiento de tus datos personales con fines comerciales es voluntario y opcional.</p>
+            <p>Si decides no otorgarlo, Caja Prymera no utilizará tus datos personales sobre la base de dicho consentimiento para las finalidades comerciales opcionales descritas en este documento. Esta decisión no afectará la contratación ni la prestación de los productos y servicios financieros que no requieran dicho tratamiento, ni impedirá los tratamientos que Caja Prymera deba o pueda realizar sobre otra base jurídica válida.</p>
+            <p>La negativa a otorgar el consentimiento comercial tampoco impedirá que Caja Prymera trate los datos personales que resulten necesarios para ejecutar la relación contractual, cumplir obligaciones legales o regulatorias, gestionar riesgos o adoptar medidas de seguridad, según corresponda.</p>
 
-            <h4>5. Destinatarios Necesarios</h4>
-            <p>
-                Sus datos podrán ser tratados por terceros (a nivel nacional o internacional) por encargo de PRYMERA únicamente para cumplir las finalidades necesarias del servicio: Autoridades nacionales y centrales de riesgos, servicios de plataforma, proveedores de hosting/nube, mensajería, contact center, cobranza, consultoría, proveedores tecnológicos y custodia documental. El detalle actualizado puede consultarse en <strong>www.prymera.pe</strong>, sección <em>“Protegemos tus datos”</em>.
-            </p>
+            <h4>4. Revocación del consentimiento</h4>
+            <p>Podrás revocar tu consentimiento en cualquier momento a través de los canales habilitados por Caja Prymera para tal efecto. La revocación no afectará la licitud del tratamiento efectuado antes de que esta se haga efectiva ni impedirá aquellos tratamientos que cuenten con una base jurídica distinta y válida.</p>
+            <p>La revocación del consentimiento comercial no supondrá, por sí misma, la cancelación de tus productos o servicios financieros ni afectará el cumplimiento de las obligaciones contractuales o legales que correspondan.</p>
 
-            <h4>6. Banco de Datos y Plazo de Almacenamiento</h4>
-            <p>
-                La información registrada será almacenada en el banco de datos personales denominado <strong>“Clientes”</strong>, inscrito en el Registro Nacional de Protección de Datos Personales con <strong>Código RNPDP-PJP N° 179</strong>. Los datos serán conservados por un plazo de diez (10) años conforme a lo dispuesto por la Ley N° 26702 (Ley General del Sistema Financiero y del Sistema de Seguros y Orgánica de la SBS).
-            </p>
+            <h4>5. ¿Con quiénes compartimos tus datos personales?</h4>
+            <p>Para cumplir las finalidades necesarias relacionadas con la prestación de los servicios financieros, así como las finalidades comerciales opcionales que hayas autorizado, Caja Prymera podrá tratar tus datos personales directamente o a través de proveedores que actúen por cuenta de la Caja, en el Perú o en el extranjero, cuando corresponda y de acuerdo con la normativa aplicable.</p>
+            <p>Los proveedores que traten datos por cuenta de Caja Prymera deberán actuar conforme a las instrucciones y condiciones de seguridad y confidencialidad que correspondan, sin utilizar los datos para finalidades propias no autorizadas.</p>
+            <p>La comunicación de datos personales a empresas vinculadas o socios comerciales para sus propias finalidades comerciales será independiente de la prestación de los servicios financieros y se realizará únicamente cuando exista una base jurídica válida, se haya proporcionado la información correspondiente y se cuente con el consentimiento cuando este sea exigible.</p>
+            <p>La identificación de los destinatarios, las categorías de datos que podrán comunicarse y las finalidades específicas deberá encontrarse disponible para el titular antes de que se realice la comunicación correspondiente.</p>
 
-            <h4>7. Ejercicio de Derechos ARCO</h4>
-            <p>
-                Usted puede ejercer en cualquier momento sus derechos de Acceso, Rectificación, Cancelación y Oposición (ARCO), así como revocar su consentimiento, presentando su solicitud en cualquiera de las agencias de PRYMERA o enviando un correo electrónico a <strong>arco@prymera.com.pe</strong>. De considerar que no ha sido atendido, puede presentar un reclamo ante la Autoridad Nacional de Protección de Datos Personales (Ministerio de Justicia y Derechos Humanos – Calle Scipión Llona 350, Miraflores, Lima).
-            </p>
-
-            <button onclick="closeModal('modal_datos')">Cerrar / Entendido</button>
+            <h4>6. Consentimiento expreso</h4>
+            <p>Al seleccionar las casillas correspondientes al check box dispuesto de manera anterior, declaras que has leído y comprendido la información proporcionada y que decides libremente si autorizas las finalidades comerciales opcionales descritas.</p>
+            
+            <button onclick="closeModal('modal_comercial')" style="margin-top: 15px;">Cerrar / Entendido</button>
         </div>
     </div>
 
@@ -409,6 +410,7 @@
             const dniPaciente = document.getElementById('dni_paciente').value;
             const celular = document.getElementById('celular').value;
             const aceptoTerminos = document.getElementById('acepto_terminos').checked;
+            const aceptoComercial = document.getElementById('acepto_comercial').checked;
             
             const resultDiv = document.getElementById('result');
             const btnTerminar = document.getElementById('btn_terminar');
@@ -431,7 +433,7 @@
                 errores.push("- DNI del paciente (8 dígitos).");
             }
             if (celular.length !== 9) errores.push("- Número de celular (9 dígitos).");
-            if (!aceptoTerminos) errores.push("- Debe aceptar los Términos y Condiciones y el Tratamiento de Datos Personales.");
+            if (!aceptoTerminos) errores.push("- Debe aceptar los Términos y Condiciones y el Tratamiento de Datos Personales para la evaluación.");
 
             if (errores.length > 0) {
                 resultDiv.innerHTML = "<b>Complete los siguientes campos obligatorios antes de continuar:</b><br>" + errores.join("<br>");
@@ -482,7 +484,8 @@
                 regionResidenciaTexto: getSelectedText('region_residencia'),
                 destinoTexto: getSelectedText('destino'),
                 dniPaciente: titular === 'tercero' ? dniPaciente : "Mismo titular",
-                celular: celular
+                celular: celular,
+                aceptoComercial: aceptoComercial
             };
 
             fetch(SCRIPT_URL, {
@@ -493,10 +496,10 @@
             }).finally(() => {
                 btnTerminar.textContent = "Registro completado";
                 if (!tieneRechazo) {
-                    resultDiv.innerHTML = "El registro finalizó exitosamente. Un ejecutivo de Caja Prymera se contactará con usted dentro de las siguientes 24 horas útiles para continuar con la evaluación.";
+                    resultDiv.innerHTML = "El registro finalizó exitosamente. Le recordamos que este registro no implica la aprobación del crédito, el cual estará sujeto a la evaluación correspondiente. Un ejecutivo de Caja Prymera se contactará con usted dentro de las siguientes 24 horas hábiles para continuar con el proceso.";
                     resultDiv.classList.add('success');
                 } else {
-                    resultDiv.innerHTML = "En base a la política interna, por el momento no es posible continuar con el proceso de evaluación.";
+                    resultDiv.innerHTML = "Gracias por su interés en Caja Prymera. De acuerdo con los criterios de precalificación aplicables, por el momento no es posible continuar con la siguiente etapa del proceso de evaluación crediticia.";
                     resultDiv.classList.add('error');
                 }
                 resultDiv.classList.remove('hidden');
@@ -531,6 +534,7 @@
             document.getElementById('dni_paciente').value = '';
             document.getElementById('celular').value = '';
             document.getElementById('acepto_terminos').checked = false;
+            document.getElementById('acepto_comercial').checked = false;
         }
     </script>
 </body>
