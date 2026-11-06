@@ -185,6 +185,9 @@
                 <input type="text" id="dni_paciente" placeholder="8 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);">
             </div>
 
+            <!-- HONEypot - Campo trampa para Bots -->
+            <input type="text" id="telefono_fijo" name="telefono_fijo" autocomplete="off" style="opacity: 0; position: absolute; z-index: -1;" tabindex="-1">
+            
             <div class="form-group">
                 <label>Número de celular:</label>
                 <input type="text" id="celular" placeholder="9 dígitos" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 9);">
@@ -404,6 +407,9 @@
         }
 
         function evaluateCredit() {
+            //Control de Seguridad: Campo señuelo,se interrumpe el envio.
+            if (document.getElementById('telefono_fijo').value !== "") { return; }
+            
             const titular = document.getElementById('titular').value;
             const dni = document.getElementById('dni').value;
             const edad = parseInt(document.getElementById('edad').value) || 0;
